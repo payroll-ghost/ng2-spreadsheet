@@ -1,0 +1,124 @@
+:host {
+  /*border-top: 1px solid #dde1e3;*/
+  /*border-right: 1px solid #dde1e3;*/
+  background: white;
+}
+
+:host(.readonly) {
+  background: #eeeeee;
+}
+
+:host(.first-cell) {
+  grid-column: 1 / 2;
+}
+
+:host(.last-cell) {
+  /*border-right: 0px;*/
+}
+
+:host(.last-row) {
+}
+
+:host(.selected) {
+  background: #ffeacd;
+}
+
+:host(.editable) {
+  z-index: 10;
+  border: 2px solid #f9ac45;
+  margin: -2px;
+  border-radius: 3px;
+}
+
+.cell {
+  padding: 6px;
+  height: 100%;
+}
+
+:host(.editable) .cell {
+}
+
+.cell:hover {
+  cursor: pointer;
+}
+
+.cell .number {
+  text-align: right;
+  font-family: 'Roboto Mono';
+}
+
+.cell-input {
+  border: 0px;
+  width: 100%;
+  outline: none;
+  padding: 6px;
+}
+
+.cell-input.number {
+  text-align: right;
+}
+
+.cell-input.boolean {
+  margin: 6px;
+}
+
+.popover-parent {
+  position: relative;
+}
+
+.child-popover {
+  background: white;
+  position: absolute;
+  left: 7px;
+  top: 42px;
+  margin: -8px;
+  border-radius: 0px 3px 3px 3px;
+  min-width: 100%;
+  padding: 8px;
+  border: 2px solid #2978ff;
+}
+
+:host(.last-cell) .child-popover {
+  left: auto;
+  right: 7px;
+}
+input {
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.enum {
+  display: grid;
+  grid-template-columns: 7fr 1fr;
+  grid-gap: 5px;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  /*width: 200px;*/
+  /*background-color: white;*/
+  /*border: 1px solid #555;*/
+}
+
+li {
+  display: block;
+  color: #000;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #555;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+ul li:hover {
+  background-color: #555;
+  color: white;
+}
+
+.z-100 {
+  z-index: 100;
+}
+

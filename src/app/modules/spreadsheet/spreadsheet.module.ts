@@ -1,21 +1,35 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SpreadsheetComponent } from './spreadsheet.component';
-import { CellComponent } from './components/cell/cell.component';
+import { SpreadsheetHeaderComponent } from './components/spreadsheet-header/spreadsheet-header.component';
+import { SpreadsheetFooterComponent } from './components/spreadsheet-footer/spreadsheet-footer.component';
+import { SpreadsheetRowComponent } from './components/spreadsheet-row/spreadsheet-row.component';
+import { SpreadsheetCellComponent } from './components/spreadsheet-cell/spreadsheet-cell.component';
+import { SpreadsheetHeaderBarComponent } from './components/spreadsheet-header-bar/spreadsheet-header-bar.component';
 import { FormsModule } from '@angular/forms';
-import { CellTextComponent } from './components/cell-text/cell-text.component';
+import { FocusDirective } from './directives/focus.directive';
+import { SpreadsheetTotalsComponent } from './components/spreadsheet-totals/spreadsheet-totals.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule
+  imports: [CommonModule, FormsModule],
+  declarations: [
+    SpreadsheetComponent,
+    SpreadsheetHeaderComponent,
+    SpreadsheetFooterComponent,
+    SpreadsheetRowComponent,
+    SpreadsheetCellComponent,
+    SpreadsheetHeaderBarComponent,
+    FocusDirective,
+    SpreadsheetTotalsComponent
   ],
   exports: [
     SpreadsheetComponent,
-    CellComponent
-  ],
-  declarations: [SpreadsheetComponent, CellComponent, CellTextComponent]
+    SpreadsheetHeaderBarComponent,
+    SpreadsheetHeaderComponent,
+    SpreadsheetFooterComponent,
+    SpreadsheetRowComponent,
+    SpreadsheetCellComponent,
+    SpreadsheetTotalsComponent
+  ]
 })
-export class SpreadsheetModule {
-
-}
+export class SpreadsheetModule {}

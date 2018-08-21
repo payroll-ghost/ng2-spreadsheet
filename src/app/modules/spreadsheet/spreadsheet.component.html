@@ -1,4 +1,12 @@
-<div class="spreadsheet" [ngStyle]="{'grid-template-columns': 'repeat(' + (numberOfColumns || 1) + ', minmax(max-content, auto))'}">
-  <div class="highlight" #highlight></div>
-  <ng-content></ng-content>
+<div class="spreadsheet" [hidden]='headerBar.numberOfColumns === 0' [ngStyle]="{'grid-template-columns': 'repeat(' + (headerBar.numberOfColumns || 0) + ', minmax(max-content, auto))'}">
+  <ng-container>
+    <ng-content select="app-ss-header-bar"></ng-content>
+    <ng-content select="app-ss-row"></ng-content>
+    <ng-content select="app-ss-totals"></ng-content>
+    <div class="footer">
+      <ng-content select="app-ss-footer"></ng-content>
+    </div>
+  </ng-container>
+</div>
+<div *ngIf="!headerBar.numberOfColumns">
 </div>

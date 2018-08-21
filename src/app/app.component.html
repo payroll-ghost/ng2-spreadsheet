@@ -1,7 +1,8 @@
-<ss-spreadsheet numberOfColumns="12">
-  <ng-container *ngFor="let column of columns; index as i">
-    <ng-container *ngFor="let row of column; index as j">
-      <ss-cell [(ngModel)]="columns[i][j]"></ss-cell>
-    </ng-container>
-  </ng-container>
-</ss-spreadsheet>
+<app-ss>
+  <app-ss-header-bar>
+    <app-ss-header *ngFor="let column of columns[0]">Name</app-ss-header>
+  </app-ss-header-bar>
+  <app-ss-row *ngFor="let column of columns; index as i">
+    <app-ss-cell *ngFor="let row of column; index as j" [(ngModel)]="columns[i][j]" type="text"></app-ss-cell>
+  </app-ss-row>
+</app-ss>

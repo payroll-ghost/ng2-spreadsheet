@@ -1,20 +1,13 @@
 .spreadsheet {
   display: grid;
-  background: white;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #dde1e3;
+  grid-gap: 1px;
+  padding: 1px;
 }
 
-.highlight {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100px;
-  height: 32px;
-  background: #ffaaaa55;
-  border: 1px solid red;
-
-  -webkit-transition: all .2s;
-  -moz-transition: all .2s;
-  -ms-transition: all .2s;
-  -o-transition: all .2s;
-  transition: all .2s;
+.footer {
+  grid-column: 1 / -1;
 }

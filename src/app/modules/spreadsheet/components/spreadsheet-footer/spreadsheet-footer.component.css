@@ -1,0 +1,17 @@
+.footer {
+  padding: 6px;
+  display: flex;
+  justify-content: flex-start;
+  background: #eeeeee;
+}
+
+.footer button {
+  margin: 2px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: transparent;
+}
+
+.footer button:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,11 @@
+:host {
+  display: contents;
+}
+
+.cell {
+  padding: 6px;
+  height: 100%;
+  background-color: ghostwhite;
+  font-weight: bold;
+  text-align: right;
+}

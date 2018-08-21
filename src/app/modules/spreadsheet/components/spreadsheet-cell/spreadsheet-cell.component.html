@@ -1,0 +1,46 @@
+<div class="cell" *ngIf="!editable || readonly; else isEditable" (click)="onClick()" (dblclick)="onDblClick()">
+  <ng-container [ngSwitch]="type">
+    <div *ngSwitchCase="'text'">{{ value }}</div>
+    <div *ngSwitchCase="'number'" class="number">{{ value }}</div>
+    <div *ngSwitchCase="'enum'">{{ value }}</div>
+    <div *ngSwitchCase="'parent'" class="parent">
+      {{ value }}
+    </div>
+    <div *ngSwitchCase="'custom'">{{ value }}</div>
+    <div *ngSwitchCase="'boolean'">
+      <input type="checkbox" [ngModel]="value" disabled>
+    </div>
+    <div *ngSwitchCase="'content'">
+      <ng-container *ngTemplateOutlet="childTemplate"></ng-container>
+    </div>
+  </ng-container>
+</div>
+<ng-template #isEditable>
+  <ng-container [ngSwitch]="type">
+    <input *ngSwitchCase="'text'" [(ngModel)]="value" class="cell-input text" appFocus size="1">
+    <input *ngSwitchCase="'number'" [(ngModel)]="value" class="cell-input number" appFocus size="1">
+    <div class="popover-parent" *ngSwitchCase="'parent'">
+      <div class="cell">{{ value }}</div>
+      <div class="child-popover">
+        <ng-container *ngTemplateOutlet="childTemplate"></ng-container>
+      </div>
+    </div>
+    <div class="popover-parent" *ngSwitchCase="'enum'">
+      <div class="cell enum">
+        <div><input [(ngModel)]="value" appFocus size="1"></div>
+        <div><span class="fa fa-caret-down" (click)="openMenu = true"></span></div>
+      </div>
+      <div *ngIf="openMenu" class="child-popover z-100">
+        <ul>
+          <li *ngFor="let option of allowedValues" (click)="setOption(option.value)">{{option.label}}</li>
+        </ul>
+      </div>
+    </div>
+    <div *ngSwitchCase="'custom'">
+      <ng-content></ng-content>
+    </div>
+    <div *ngSwitchCase="'boolean'">
+      <input type="checkbox" [(ngModel)]="value" class="cell-input boolean">
+    </div>
+  </ng-container>
+</ng-template>
