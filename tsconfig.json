@@ -16,6 +16,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ng2-spreadsheet": [
+        "dist/ng2-spreadsheet"
+      ],
+      "ng2-spreadsheet/*": [
+        "dist/ng2-spreadsheet/*"
+      ]
+    }
   }
 }
