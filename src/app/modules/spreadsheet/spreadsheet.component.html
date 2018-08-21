@@ -1,0 +1,4 @@
+<div class="spreadsheet" [ngStyle]="{'grid-template-columns': 'repeat(' + (numberOfColumns || 1) + ', minmax(max-content, auto))'}">
+  <div class="highlight" #highlight></div>
+  <ng-content></ng-content>
+</div>
