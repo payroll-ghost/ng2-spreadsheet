@@ -82,7 +82,7 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
 
       this.cells.forEach((cell) => {
         cell.click.subscribe((location: {row: number, column: number}) => {
-          this.setSelectedCell(location);
+          this.moveSelectedCell(location.row, location.column, true);
         });
       });
 
@@ -98,6 +98,30 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
       });
       this.cdr.markForCheck();
     }, 0);
+  }
+
+  getCellAtLocation(location: {row: number, column: number}): CellComponent {
+    return this.cells.toArray()[this.convertLocationToIndex(location)];
+  }
+
+  getCellAtIndex(index: number): CellComponent {
+    return this.cells.toArray()[index];
+  }
+
+  normalizeLocation(location: {row: number, column: number}): {row: number, column: number} {
+    return this.convertIndexToLocation(this.convertLocationToIndex(location));
+  }
+
+  convertLocationToIndex(location: {row: number, column: number}): number {
+    console.log('location', location);
+    return location.row * this.numberOfColumns + location.column;
+  }
+
+  convertIndexToLocation(index: number): {row: number, column: number} {
+    return {
+      row: Math.floor(index / this.numberOfColumns),
+      column: index % this.numberOfColumns
+    };
   }
 
   setSelectedCell(location: {row: number, column: number}) {
@@ -116,13 +140,45 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
     }
   }
 
-  moveSelectedCell(row: number, column: number) {
-    const potentialLocation = {column: this.selectedCellLocation.column + column, row: this.selectedCellLocation.row + row};
+  moveSelectedCell(row: number, column: number, absolute = false) {
+    let potentialLocation = {
+      row: absolute ? row : this.selectedCellLocation.row + row,
+      column: absolute ? column : this.selectedCellLocation.column + column,
+    };
 
     potentialLocation.column = potentialLocation.column < 0 ? 0 : potentialLocation.column;
     potentialLocation.column = potentialLocation.column > this.lastColumn ? this.lastColumn : potentialLocation.column;
     potentialLocation.row = potentialLocation.row < 0 ? 0 : potentialLocation.row;
     potentialLocation.row = potentialLocation.row > this.lastRow ? this.lastRow : potentialLocation.row;
+
+    if (!absolute) {
+      while (this.getCellAtLocation(potentialLocation).readonly) {
+        if (row !== 0) {
+          const fixedLocation = { ...potentialLocation, row: potentialLocation.row + (row > 0 ? 1 : -1) };
+          if (this.convertLocationToIndex(fixedLocation) > this.cells.length) {
+            potentialLocation = this.selectedCellLocation;
+            break;
+          } else {
+            potentialLocation = fixedLocation;
+          }
+        }
+        if (column !== 0) {
+          const fixedLocation = { ...potentialLocation, column: potentialLocation.column + (column > 0 ? 1 : -1) };
+          if (this.normalizeLocation(fixedLocation).column !== fixedLocation.column) {
+            potentialLocation = this.selectedCellLocation;
+            break;
+          } else {
+            potentialLocation = fixedLocation;
+          }
+        }
+      }
+    } else {
+      if (this.getCellAtLocation(potentialLocation).readonly) {
+        potentialLocation = this.selectedCellLocation;
+      }
+    }
+
+    potentialLocation = this.normalizeLocation(potentialLocation);
 
     this.setSelectedCell(potentialLocation);
   }
@@ -154,6 +210,7 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
       this.editable = true;
       if (this.selectedCell) {
         this.selectedCell.editable = this.editable;
+        this.editable = this.selectedCell.editable;
       }
     }
   }

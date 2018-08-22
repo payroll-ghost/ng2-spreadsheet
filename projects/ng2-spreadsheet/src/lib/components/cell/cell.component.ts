@@ -23,12 +23,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CellComponent implements OnInit {
+  _selected = false;
 
   @ViewChild('cell') cell: ElementRef;
 
   @Input() type = 'text';
 
-  _selected = false;
+  @HostBinding('class.readonly')
+  @Input() readonly = false;
+
 
   @HostBinding('class.lastColumn')
   @Input() lastColumn = false;
@@ -60,17 +63,18 @@ export class CellComponent implements OnInit {
 
   @Input('editable')
   set editable(value: boolean) {
+    const newValue = value && !this.readonly;
 
-    if (!this.editable && value) {
+    if (!this.editable && newValue) {
       this.oldValue = this.value;
-    } else if (this.editable && !value) {
+    } else if (this.editable && !newValue && this.value !== this.oldValue) {
       this.propagateChange(this.value);
       this.cellChange.emit({
         newValue: this.value,
         oldValue: this.oldValue
       });
     }
-    this._editable = value;
+    this._editable = newValue;
     this.cdr.markForCheck();
   }
 

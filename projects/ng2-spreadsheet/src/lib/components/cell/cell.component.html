@@ -1,5 +1,6 @@
 <div class="cell" (click)="onClick()" #cell>
   <ng-container [ngSwitch]="type">
     <ss-cell-text *ngSwitchCase="'text'" [(ngModel)]="value" [editable]="editable" #child></ss-cell-text>
+    <ss-cell-header *ngSwitchCase="'header'" [(ngModel)]="value" [editable]="editable" #child></ss-cell-header>
   </ng-container>
 </div>

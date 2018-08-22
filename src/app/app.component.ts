@@ -23,6 +23,7 @@ export class AppComponent {
     }, {
       name: 'Trent Jones',
       email: 'trentjones21@gmail.com',
+      readonly: true,
       wages: [{
         amount: 500,
         name: 'Regular'

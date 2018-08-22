@@ -1,8 +1,12 @@
 <ss-spreadsheet numberOfColumns="4" (spreadsheetChange)="onSpreadsheetChange($event)">
+  <ss-cell ngModel="name" type='header'></ss-cell>
+  <ss-cell ngModel="email" type='header'></ss-cell>
+  <ss-cell ngModel="email" type='header'></ss-cell>
+  <ss-cell ngModel="email" type='header'></ss-cell>
   <ng-container *ngFor="let user of users">
     <ss-cell [(ngModel)]="user.name"></ss-cell>
-    <ss-cell [(ngModel)]="user.email"></ss-cell>
-    <ss-cell [(ngModel)]="user.email"></ss-cell>
-    <ss-cell [(ngModel)]="user.email" (cellChange)="onCellChange($event)"></ss-cell>
+    <ss-cell [(ngModel)]="user.email" [readonly]="user.readonly"></ss-cell>
+    <ss-cell [(ngModel)]="user.email" [readonly]="user.readonly"></ss-cell>
+    <ss-cell [(ngModel)]="user.email" (cellChange)="onCellChange($event)" [readonly]="true"></ss-cell>
   </ng-container>
 </ss-spreadsheet>
