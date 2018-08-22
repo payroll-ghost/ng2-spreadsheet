@@ -29,10 +29,6 @@ export class CellComponent implements OnInit {
 
   @Input() type = 'text';
 
-  @HostBinding('class.readonly')
-  @Input() readonly = false;
-
-
   @HostBinding('class.lastColumn')
   @Input() lastColumn = false;
 
@@ -40,7 +36,10 @@ export class CellComponent implements OnInit {
   @Input() lastRow = false;
 
   @HostBinding('class.editable')
-  _editable = false;
+  _editable;
+
+  @HostBinding('class.readonly')
+  @Input() _readonly = false;
 
   @Input() row: number;
   @Input() column: number;
@@ -55,10 +54,7 @@ export class CellComponent implements OnInit {
   constructor(public cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-  }
-
-  get editable(): boolean {
-    return this._editable;
+    this.readonly = !!this.readonly;
   }
 
   @Input('editable')
@@ -78,14 +74,27 @@ export class CellComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  get selected(): boolean {
-    return this._selected;
+  get editable(): boolean {
+    return this._editable;
   }
 
   @Input('selected')
   set selected(value: boolean) {
     this._selected = value;
     this.cdr.markForCheck();
+  }
+
+  get selected(): boolean {
+    return this._selected;
+  }
+
+  @Input('readonly')
+  set readonly(value: boolean) {
+    this._readonly = value || this.type === 'header';
+  }
+
+  get readonly(): boolean {
+    return this._readonly;
   }
 
   onClick() {

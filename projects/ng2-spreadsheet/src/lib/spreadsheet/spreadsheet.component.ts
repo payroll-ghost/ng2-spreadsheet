@@ -113,7 +113,6 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
   }
 
   convertLocationToIndex(location: {row: number, column: number}): number {
-    console.log('location', location);
     return location.row * this.numberOfColumns + location.column;
   }
 
@@ -155,7 +154,8 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
       while (this.getCellAtLocation(potentialLocation).readonly) {
         if (row !== 0) {
           const fixedLocation = { ...potentialLocation, row: potentialLocation.row + (row > 0 ? 1 : -1) };
-          if (this.convertLocationToIndex(fixedLocation) > this.cells.length) {
+          const index = this.convertLocationToIndex(fixedLocation);
+          if (index > this.cells.length || index < 0) {
             potentialLocation = this.selectedCellLocation;
             break;
           } else {
