@@ -7,22 +7,78 @@ import { List, Range } from 'immutable';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  text = 'what';
-  rows: List<List<number>>;
-
-  columns = [];
+  users: any[];
 
   constructor() {
-    const columns: List<number> = List([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-    const rows: List<List<number>> = List(Range(0, 13).map(x => columns));
-    this.rows = rows;
+    this.users = [{
+      name: 'Trent Jones',
+      email: 'trentjones21@gmail.com',
+      wages: [{
+        amount: 500,
+        name: 'Regular'
+      }, {
+        amount: 300,
+        name: 'Overtime'
+      }]
+    }, {
+      name: 'Trent Jones',
+      email: 'trentjones21@gmail.com',
+      wages: [{
+        amount: 500,
+        name: 'Regular'
+      }, {
+        amount: 300,
+        name: 'Overtime'
+      }]
+    }, {
+      name: 'Trent Jones',
+      email: 'trentjones21@gmail.com',
+      wages: [{
+        amount: 500,
+        name: 'Regular'
+      }, {
+        amount: 300,
+        name: 'Overtime'
+      }]
+    }, {
+      name: 'Trent Jones',
+      email: 'trentjones21@gmail.com',
+      wages: [{
+        amount: 500,
+        name: 'Regular'
+      }, {
+        amount: 300,
+        name: 'Overtime'
+      }]
+    }, {
+      name: 'Trent Jones',
+      email: 'trentjones21@gmail.com',
+      wages: [{
+        amount: 500,
+        name: 'Regular'
+      }, {
+        amount: 300,
+        name: 'Overtime'
+      }]
+    }, {
+      name: 'Trent Jones',
+      email: 'trentjones21@gmail.com',
+      wages: [{
+        amount: 500,
+        name: 'Regular'
+      }, {
+        amount: 300,
+        name: 'Overtime'
+      }]
+    }];
+  }
 
-    setTimeout(() => {
-      console.log('changing');
-      const columns2: List<number> = List([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-      const rows2: List<List<number>> = List(Range(0, 10).map(x => columns2));
-      this.rows = rows2;
-    }, 20000);
+  onCellChange(event) {
+    console.log('cell changed', event);
+  }
 
+  onSpreadsheetChange(event) {
+    console.log('on spreadsheet change', event);
+    console.log('this.users', this.users);
   }
 }

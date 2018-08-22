@@ -24,6 +24,10 @@ export class CellTextComponent implements OnInit {
   ngOnInit() {
   }
 
+  onValueChange() {
+    this.propagateChange(this.value);
+  }
+
   writeValue(obj: any): void {
     this.value = (obj || '').toString();
     this.cdr.markForCheck();

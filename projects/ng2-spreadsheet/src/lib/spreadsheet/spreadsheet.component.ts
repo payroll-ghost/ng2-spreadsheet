@@ -6,7 +6,7 @@ import {
   AfterContentInit,
   Input,
   HostListener,
-  ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, OnChanges, SimpleChanges
+  ChangeDetectorRef, ViewChild, ElementRef, Output, EventEmitter
 } from '@angular/core';
 import {CellComponent} from '../components/cell/cell.component';
 
@@ -21,7 +21,14 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
 
   @Input() numberOfColumns = 1;
 
-  editable = false;
+  @Output() spreadsheetChange: EventEmitter<{
+    row: number,
+    column: number,
+    oldValue: any,
+    newValue: any
+  }> = new EventEmitter();
+
+  _editable = false;
 
   selectedCellLocation = { row: 0, column: 0 };
   selectedCell: CellComponent;
@@ -39,6 +46,15 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
       this.setupSpreadsheet();
     });
     this.setupSpreadsheet();
+  }
+
+  get editable() {
+    return this._editable;
+  }
+
+  set editable(value: boolean) {
+    this._editable = value;
+    this.highlight.nativeElement.style.opacity = this.editable ? 0 : 1;
   }
 
   setupSpreadsheet() {
@@ -69,7 +85,17 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
           this.setSelectedCell(location);
         });
       });
-      console.log('marking');
+
+      this.cells.forEach((cell) => {
+        cell.cellChange.subscribe((result: {oldValue: any, newValue: any}) => {
+          this.spreadsheetChange.emit({
+            row: cell.row,
+            column: cell.column,
+            oldValue: result.oldValue,
+            newValue: result.newValue
+          });
+        });
+      });
       this.cdr.markForCheck();
     }, 0);
   }
@@ -79,7 +105,6 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
     if (this.selectedCell) {
       this.selectedCell.selected = false;
       this.selectedCell.editable = this.editable;
-
     }
 
     this.selectedCellLocation = location;
@@ -87,10 +112,7 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
 
     if (this.selectedCell) {
       this.selectedCell.selected = true;
-      this.highlight.nativeElement.style.top = (this.selectedCell.cell.nativeElement.offsetTop - 1) + 'px';
-      this.highlight.nativeElement.style.left = (this.selectedCell.cell.nativeElement.offsetLeft - 1) + 'px';
-      this.highlight.nativeElement.style.width = (this.selectedCell.cell.nativeElement.clientWidth - 0) + 'px';
-      this.highlight.nativeElement.style.height = (this.selectedCell.cell.nativeElement.clientHeight + 0) + 'px';
+      this.moveHighlight();
     }
   }
 
@@ -103,6 +125,13 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
     potentialLocation.row = potentialLocation.row > this.lastRow ? this.lastRow : potentialLocation.row;
 
     this.setSelectedCell(potentialLocation);
+  }
+
+  moveHighlight() {
+    this.highlight.nativeElement.style.top = (this.selectedCell.cell.nativeElement.offsetTop - 1) + 'px';
+    this.highlight.nativeElement.style.left = (this.selectedCell.cell.nativeElement.offsetLeft - 1) + 'px';
+    this.highlight.nativeElement.style.width = (this.selectedCell.cell.nativeElement.clientWidth - 0) + 'px';
+    this.highlight.nativeElement.style.height = (this.selectedCell.cell.nativeElement.clientHeight + 0) + 'px';
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -121,6 +150,7 @@ export class SpreadsheetComponent implements OnInit, AfterContentInit {
     }
 
     if (event.key === 'Enter') {
+      event.stopPropagation();
       this.editable = true;
       if (this.selectedCell) {
         this.selectedCell.editable = this.editable;

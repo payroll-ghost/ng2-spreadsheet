@@ -1,3 +1,9 @@
-<div class="cell">
+<div class="cell" *ngIf="!editable; else showEditable">
   {{value}}
 </div>
+
+<ng-template #showEditable>
+  <div class="editable-cell">
+    <input class="cell-input" ssFocus [(ngModel)]="value" (ngModelChange)="onValueChange()">
+  </div>
+</ng-template>

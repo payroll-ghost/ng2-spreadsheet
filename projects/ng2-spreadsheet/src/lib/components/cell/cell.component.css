@@ -17,7 +17,7 @@
 }
 
 :host(.editable) {
-  border: 2px solid #aaaaaa;
+  border: 2px solid blue;
   border-radius: 3px;
   margin: -2px;
   z-index: 10;

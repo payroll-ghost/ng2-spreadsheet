@@ -28,7 +28,7 @@ export class CellComponent implements OnInit {
 
   @Input() type = 'text';
 
-  @Input() selected = false;
+  _selected = false;
 
   @HostBinding('class.lastColumn')
   @Input() lastColumn = false;
@@ -37,22 +37,51 @@ export class CellComponent implements OnInit {
   @Input() lastRow = false;
 
   @HostBinding('class.editable')
-  @Input() editable = false;
+  _editable = false;
 
   @Input() row: number;
   @Input() column: number;
 
   @Output() click: EventEmitter<any> = new EventEmitter();
   @Output() dblClick: EventEmitter<any> = new EventEmitter();
+  @Output() cellChange: EventEmitter<{oldValue: any, newValue: any}> = new EventEmitter();
 
+  oldValue: string;
   value: string;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(public cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    setInterval(() => {
-      // this.cdr.markForCheck();
-    }, 1000);
+  }
+
+  get editable(): boolean {
+    return this._editable;
+  }
+
+  @Input('editable')
+  set editable(value: boolean) {
+
+    if (!this.editable && value) {
+      this.oldValue = this.value;
+    } else if (this.editable && !value) {
+      this.propagateChange(this.value);
+      this.cellChange.emit({
+        newValue: this.value,
+        oldValue: this.oldValue
+      });
+    }
+    this._editable = value;
+    this.cdr.markForCheck();
+  }
+
+  get selected(): boolean {
+    return this._selected;
+  }
+
+  @Input('selected')
+  set selected(value: boolean) {
+    this._selected = value;
+    this.cdr.markForCheck();
   }
 
   onClick() {

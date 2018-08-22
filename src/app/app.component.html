@@ -1,7 +1,8 @@
-<ss-spreadsheet numberOfColumns="12" *ngIf="rows">
-  <ng-container *ngFor="let row of rows; index as i">
-    <ng-container *ngFor="let column of row; index as j">
-      <ss-cell [ngModel]="rows.get(i).get(j)"></ss-cell>
-    </ng-container>
+<ss-spreadsheet numberOfColumns="4" (spreadsheetChange)="onSpreadsheetChange($event)">
+  <ng-container *ngFor="let user of users">
+    <ss-cell [(ngModel)]="user.name"></ss-cell>
+    <ss-cell [(ngModel)]="user.email"></ss-cell>
+    <ss-cell [(ngModel)]="user.email"></ss-cell>
+    <ss-cell [(ngModel)]="user.email" (cellChange)="onCellChange($event)"></ss-cell>
   </ng-container>
 </ss-spreadsheet>
